@@ -15,7 +15,21 @@ interface DBUserInsert {
   phone: string;
 }
 
-declare namespace DB {
-  type User = DBUser;
+interface UserPayload {
+  size: number;
+  page: number;
+}
+
+interface UserResponse {
+  count: number;
+  page: number;
+  list: User.Item[];
+}
+
+declare namespace User {
+  type Item = DBUser;
   type Insert = DBUserInsert;
+
+  type Payload = UserPayload;
+  type Response = UserResponse;
 }

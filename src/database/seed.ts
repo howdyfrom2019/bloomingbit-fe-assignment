@@ -37,7 +37,7 @@ export const insert = db.prepare(
   `INSERT INTO users (id, name, email, address, phone) VALUES (?, ?, ?, ?, ?)`
 );
 
-export const insertMany = db.transaction((rows: DB.Insert[]) => {
+export const insertMany = db.transaction((rows: User.Insert[]) => {
   for (const row of rows) {
     insert.run(row.id, row.name, row.email, row.address, row.phone);
   }
@@ -46,5 +46,11 @@ export const insertMany = db.transaction((rows: DB.Insert[]) => {
 export const seed = async () => {
   const users = generateUsers();
   insertMany(users);
+  console.log(`[Database] Inserted ${users.length} users`);
   db.close();
 };
+
+// Run seed if this file is executed directly
+if (require.main === module) {
+  seed().catch(console.error);
+}

@@ -12,12 +12,13 @@ export const GET = async (request: Request) => {
     const size = Number(searchParams.get("size")) || 50;
     const offset = (page - 1) * size;
 
-    const totalCount = db
-      .prepare("SELECT COUNT(*) FROM users")
-      .get("COUNT(*)") as number;
+    const totalCountResult = db
+      .prepare("SELECT COUNT(*) as count FROM users")
+      .get() as { count: number } | undefined;
+    const totalCount = totalCountResult?.count || 0;
     const users = db
       .prepare(`SELECT * FROM users LIMIT ? OFFSET ?`)
-      .all(size, offset) as DB.User[];
+      .all(size, offset) as User.Item[];
 
     return NextResponse.json({
       count: totalCount,
@@ -25,6 +26,7 @@ export const GET = async (request: Request) => {
       list: users,
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       {
         error: "Internal Server Error",

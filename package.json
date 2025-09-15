@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "db:seed": "tsx src/database/seed.ts",
-    "dev": "bunx db:seed && next dev --turbopack",
+    "dev": "bun run db:seed && next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "bunx db:seed && next start",
+    "start": "bun run db:seed && next start",
     "lint": "eslint"
   },
   "dependencies": {

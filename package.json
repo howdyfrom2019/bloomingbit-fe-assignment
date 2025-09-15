@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "db:seed": "tsx src/database/seed.ts",
+    "dev": "bunx db:seed && next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start",
+    "start": "bunx db:seed && next start",
     "lint": "eslint"
   },
   "dependencies": {

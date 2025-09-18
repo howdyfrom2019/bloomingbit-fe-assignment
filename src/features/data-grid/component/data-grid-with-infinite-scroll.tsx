@@ -1,26 +1,27 @@
 "use client";
 
-import { useInView } from "@/hook/use-in-view";
 import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { columns } from "@/features/data-grid/config/column-config";
 import { useQuery } from "@tanstack/react-query";
 import { userOptions } from "@/service/user";
 
 export default function DataGridWithInfiniteScroll() {
-  const [page, setPage] = useState(1);
-  const { data: users } = useQuery(userOptions({ page, size: 50 }));
-  console.log(users);
-
-  // const { ref, inView } = useInView({ threshold: 1 });
+  const [pagination, setPagination] = useState({ page: 0, pageSize: 50 });
+  const { data: users, isLoading } = useQuery(
+    userOptions({ page: pagination.page + 1, size: pagination.pageSize })
+  );
 
   return (
-    <div>
+    <div className="w-full max-w-7xl mx-auto">
       <DataGrid
-        rows={users?.list}
+        rows={users?.list ?? []}
         columns={columns}
-        hideFooterPagination
-        hideFooter
+        loading={isLoading}
+        paginationMode="server"
+        rowCount={users?.count ?? 0}
+        paginationModel={pagination}
+        onPaginationModelChange={setPagination}
       />
     </div>
   );

@@ -22,7 +22,7 @@ export const GET = async (request: Request) => {
 
     return NextResponse.json({
       count: totalCount,
-      page: Math.ceil(totalCount / size),
+      page: page,
       list: users,
     });
   } catch (error) {

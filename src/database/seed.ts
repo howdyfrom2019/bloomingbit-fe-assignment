@@ -44,6 +44,20 @@ export const insertMany = db.transaction((rows: User.Insert[]) => {
 });
 
 export const seed = async () => {
+  // Check if users already exist
+  const countResult = db
+    .prepare("SELECT COUNT(*) as count FROM users")
+    .get() as { count: number };
+  const existingCount = countResult.count;
+
+  if (existingCount > 0) {
+    console.log(
+      `[Database] Users already exist (${existingCount} users). Skipping seed.`
+    );
+    db.close();
+    return;
+  }
+
   const users = generateUsers();
   insertMany(users);
   console.log(`[Database] Inserted ${users.length} users`);

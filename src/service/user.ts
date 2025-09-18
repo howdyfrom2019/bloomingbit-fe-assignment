@@ -17,5 +17,6 @@ export function userOptions(payload: User.Payload) {
     queryKey: ["users", payload],
     queryFn: () => fetchUsers(payload),
     staleTime: 5 * 1000,
+    placeholderData: (prev) => prev,
   });
 }
